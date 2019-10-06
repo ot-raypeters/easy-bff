@@ -3,30 +3,46 @@ const express = require('express');
 const recursive = require('recursive-readdir');
 
 class BaseApi {
-  static getEndpoints(filePath) {
-    return new Promise((resolve, reject) =>
-      recursive(filePath, (err, paths) => {
-        if (err) return reject(err);
+  constructor() {
+    this.router = express();
+  }
 
+  static create() {
+    return new BaseApi();
+  }
+
+  static getEndpoints(basePath) {
+    return new Promise((resolve, reject) =>
+      recursive(basePath, (err, paths) => {
+        if (err) return reject(err);
         const files = paths.map(r => r.replace('.js', ''));
         return resolve(files);
       }));
   }
 
-  static createRouter(filePath, files) {
-    return files.reduce((router, file) => {
-      const endpoint = file.replace(`${filePath}/functions`, '');
-      const middleware = require(path.resolve(__dirname, '../..', file));
+  attachEndpoints(api, endpoints) {
+    this.basePath = api;
 
-      console.info('Configuring', endpoint);
-      router.all(endpoint, middleware);
-      return router;
-    }, express());
+    endpoints.forEach((filePath) => {
+      const endpoint = filePath
+        .replace('/index', '')
+        .replace(api, '');
+
+      const apiPath = path.resolve(__dirname, '../..', filePath);
+      const apiMiddleware = require(apiPath);
+
+      this.attachEndpoint(endpoint, apiMiddleware);
+    });
   }
 
-  static create({ repo }) {
-    return BaseApi.getEndpoints(repo)
-      .then(BaseApi.createRouter.bind(null, repo))
+  attachEndpoint(endpoint, apiMiddleware) {
+    console.info('Registering:', endpoint);
+    this.router.all(endpoint, apiMiddleware);
+  }
+
+  attach(api) {
+    return BaseApi.getEndpoints(api)
+      .then(this.attachEndpoints.bind(this, api))
       .catch(err => console.error('BaseApi error', err));
   }
 }

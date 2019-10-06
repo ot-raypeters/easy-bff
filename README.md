@@ -8,9 +8,9 @@ Makes it easy to create bff apis.
 
 ### Now
 
-- [ ] should be able to generate api meta data from repo
+- [x] should be able to create express router from repo
 - [ ] should be able to download repo from git
-- [ ] should alias `index.js` to be an empty path
+- [x] should alias `index.js` to be an empty path
 
 ### Next 
 
