@@ -2,7 +2,6 @@ const BaseApi = require('../models/BaseApi');
 
 class ApiManager {
   constructor() {
-    this.api = BaseApi.create();
     this.middleware = this.middleware.bind(this);
   }
 
@@ -11,7 +10,8 @@ class ApiManager {
   }
 
   attach(...args) {
-    return this.api.attach(...args);
+    this.api = BaseApi.create();
+    this.api.attach(...args);
   }
 
   middleware(...args) {

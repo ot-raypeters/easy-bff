@@ -4,6 +4,7 @@ const ObservabilityMiddleware = require('./middleware/ObservabilityMiddleware');
 
 module.exports = (app) => {
   const api = ApiManager.create();
+
   api.attach('repositories/patient-zero-api/functions');
 
   app.use([
