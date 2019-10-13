@@ -1,6 +1,21 @@
 # EasyBff
 
-A silly framework for functions as a service in node + express.js.
+__Don't call us, we'll call you__
+
+EasyBff is a silly framework for middleware as a service using node + express.
+
+## Installation
+
+```
+// Use node 10 LTS
+nvm use
+
+// Install dependencies
+npm install
+
+// Start dev server
+npm run dev
+```
 
 ## Feature roadmap
 
