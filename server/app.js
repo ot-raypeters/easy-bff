@@ -1,15 +1,14 @@
-const ApiManager = require('./services/ApiManager');
 const NoCacheMiddleware = require('./middleware/NoCacheMiddleware');
-const ObservabilityMiddleware = require('./middleware/ObservabilityMiddleware');
+const LoggingMiddleware = require('./middleware/LoggingMiddleware');
+const ApiManager = require('./services/ApiManager');
 
 module.exports = (app) => {
   const api = ApiManager.create();
-
   api.attach('repositories/patient-zero-api/functions');
 
   app.use([
     NoCacheMiddleware.middleware,
-    ObservabilityMiddleware.middleware,
+    LoggingMiddleware.middleware,
     api.middleware
   ]);
 };

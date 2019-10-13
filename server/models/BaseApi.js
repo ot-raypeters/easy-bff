@@ -23,20 +23,27 @@ class BaseApi {
   attachEndpoints(api, endpoints) {
     this.basePath = api;
 
+    if (!endpoints.length) return;
+
+    console.info('Registering endpoints:');
     endpoints.forEach((filePath) => {
-      const endpoint = filePath
-        .replace('/index', '')
-        .replace(api, '');
-
-      const apiPath = path.resolve(__dirname, '../..', filePath);
-      const apiMiddleware = require(apiPath);
-
-      this.attachEndpoint(endpoint, apiMiddleware);
+      this.attachEndpoint(filePath);
+      console.info(`  ${filePath.replace(api, '')}`);
     });
   }
 
-  attachEndpoint(endpoint, apiMiddleware) {
-    console.info('Registering:', endpoint);
+  attachEndpoint(filePath) {
+    const endpoint = filePath
+      .replace('/index', '')
+      .replace(this.basePath, '');
+
+    const apiPath = path.resolve(__dirname, '../..', filePath);
+    const apiMiddleware = require(apiPath);
+
+    this.routeEndpoint(endpoint, apiMiddleware);
+  }
+
+  routeEndpoint(endpoint, apiMiddleware) {
     this.router.all(endpoint, apiMiddleware);
   }
 

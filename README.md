@@ -15,6 +15,8 @@ Makes it easy to create bff apis.
 
 ### Later
 
+- [ ] canary release individual endpoints
+- [ ] provide configurable http service to middleware
 - [ ] should be able to hot swap apis without restarting the server
 - [ ] should check for new versions of the app periodically
 

@@ -1,4 +1,5 @@
 const BaseApi = require('../models/BaseApi');
+const HttpService = require('./HttpService');
 
 class ApiManager {
   constructor() {
@@ -9,9 +10,16 @@ class ApiManager {
     return new ApiManager();
   }
 
-  attach(...args) {
+  static getUtils() {
+    // @todo find a better way to provide utils
+    return {
+      http: HttpService
+    };
+  }
+
+  attach(apiPath) {
     this.api = BaseApi.create();
-    this.api.attach(...args);
+    this.api.attach(apiPath);
   }
 
   middleware(...args) {
