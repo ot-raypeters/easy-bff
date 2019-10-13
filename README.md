@@ -27,5 +27,6 @@ Makes it easy to create bff apis.
 ## Design principles
 
 - Simplicity
-- Speed
 - Convenience
+- Reusability
+- Standardization
